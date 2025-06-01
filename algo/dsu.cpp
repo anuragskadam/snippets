@@ -1,3 +1,6 @@
+#include <bits/stdc++.h>
+using namespace std;
+
 class dsu {
     // zero_indexed
     vector<int> _pars;

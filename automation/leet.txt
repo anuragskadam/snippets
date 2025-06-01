@@ -1,0 +1,13 @@
+#ifdef ASK_DEBUG
+#include "snippets/debug.h"
+#else
+#define debug(...) 42
+#endif
+
+
+
+#ifdef ASK_DEBUG
+int main() {
+    
+}
+#endif

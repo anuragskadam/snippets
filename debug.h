@@ -1,14 +1,16 @@
 // debug.h
 // Written by Anurag Kadam and ChatGPT
 
+#define _GLIBCXX_DEBUG
 #include <bits/stdc++.h>
 using namespace std;
 
 #define debug(...) print_names(#__VA_ARGS__), _debug(__VA_ARGS__)
 #define addline "addline"
+#define verify "verify"
 
 bool addline_called = false;
-
+bool verify_called = false;
 
 // Trait to check if a type is iterable
 template <typename T, typename = void>
@@ -68,6 +70,13 @@ void print_names(string names) {
         addline_called = true;
         return;
     }
+    else if (names == verify) {
+        cout.flush();
+        verify_called = true;
+        string command = "python3 \"./snippets/automation/pycheck.py\"";
+        system(command.c_str());
+        return;
+    }
     else if (names.empty()) {
         cerr << "[meow]";
         return;
@@ -84,8 +93,8 @@ void _debug() {
 template <typename... Args>
 void _debug(Args&&... args) {
     size_t count = 0;
-    auto printWithComma = [&](const auto& arg) {
-        if (addline_called) {
+    auto printWithComma = [&] (const auto& arg) {
+        if (addline_called || verify_called) {
             return;
         }
         simple_print(arg, delimiter);
@@ -95,6 +104,10 @@ void _debug(Args&&... args) {
 
     if (addline_called) {
         addline_called = false;
+        return;
+    }
+    if (verify_called) {
+        verify_called = false;
         return;
     }
     cerr << endl;

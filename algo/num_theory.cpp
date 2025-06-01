@@ -1,42 +1,26 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-set<int> GetPrimeSt (int lim) {
+set<int> GetPrimeSet (int lim) {
     // returns a set of prime numbers till `lim` (inclusive)
-    vector<bool> flag(lim + 1);
+    vector<bool> composite(lim + 1); composite[0] = composite[1] = true;
     set<int> primes;
-    for (int i = 2; i <= lim; i++) {
-        long long mul = i;
-        if (!flag[i]) {
+    for (long long i = 2; i <= lim; i++) {
+        if (!composite[i]) {
             primes.insert(i);
-            while (mul * i <= lim) {
-                flag[mul * i] = true;
-                mul++;
+            for (long long j = i * i; j <= lim; j += i) {
+                composite[j] = true;
             }
         }
     }
     return primes;
 }
 
-vector<int> GetPrimeVec (int lim) {
-    // returns a vector of prime numbers till `lim` (inclusive)
-    vector<bool> flag(lim + 1);
-    vector<int> primes;
-    for (int i = 2; i <= lim; i++) {
-        long long mul = i;
-        if (!flag[i]) {
-            primes.push_back(i);
-            while (mul * i <= lim) {
-                flag[mul * i] = true;
-                mul++;
-            }
-        }
-    }
-    return primes;
-}
-
-set<long long> Factors(long long num) {
+// returns set of factors by reference
+set<long long>& FactorsRef(long long num) {
+    static unordered_map<long long, set<long long>> saved_factors;
     assert(num > 0);
+    if (saved_factors.contains(num)) return saved_factors[num];
     set<long long> res;
     long long sqr = sqrt(num);
     while(sqr * sqr > num) sqr--;
@@ -47,11 +31,16 @@ set<long long> Factors(long long num) {
             res.insert(num / i);
         }
     }
-    return res;
+    return saved_factors[num] = res;
 }
 
-long long Gcd(long long a, long long b) {
+template<typename T>
+inline T Gcd(T a, T b) {
     if (b > a) swap(a, b);
-    if (b == 0) return a;
-    return (b, a % b);
+    assert(b >= 0);
+    while (b) {
+        a %= b;
+        swap(a, b);
+    }
+    return a;
 }

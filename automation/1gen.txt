@@ -1,14 +1,12 @@
-#include <bits/stdc++.h>
-
-using namespace std;
-
 #ifdef ASK_DEBUG
 #include "snippets/debug.h"
 #else
+#include <bits/stdc++.h>
+using namespace std;
 #define debug(...) 42
 #endif
 
-int main() {
+signed main() {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
     int tt = 1;
@@ -16,6 +14,8 @@ int main() {
     cin >> tt;
     #endif
     for (int tc = 1; tc <= tt; tc++) {
+        debug(tc);
         
     }
+    debug(verify);
 }
